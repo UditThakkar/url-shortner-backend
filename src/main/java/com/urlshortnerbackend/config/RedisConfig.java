@@ -1,5 +1,6 @@
 package com.urlshortnerbackend.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisPassword;
@@ -13,11 +14,19 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig {
 
+  @Value("${redis.host}")
+  private String host;
+
+  @Value("${redis.port}")
+  private int port;
+
+  @Value("{redis.database}")
+  private int database;
+
   @Bean
   JedisConnectionFactory jedisConnectionFactory() {
-    RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration("localhost", 6379);
-//    redisStandaloneConfiguration.setPassword(RedisPassword.of(password));
-    redisStandaloneConfiguration.setDatabase(12);
+    RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(host, port);
+    redisStandaloneConfiguration.setDatabase(database);
     return new JedisConnectionFactory(redisStandaloneConfiguration);
   }
 
