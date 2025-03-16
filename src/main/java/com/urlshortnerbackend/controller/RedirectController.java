@@ -18,8 +18,12 @@ public class RedirectController {
   public RedirectView redirect(@PathVariable String key) {
     String url = urlShortnerService.getOriginalUrl(key);
 
-    RedirectView redirectView = new RedirectView(url);
-    redirectView.setStatusCode(HttpStatus.FOUND);
-    return redirectView;
+    if(url!=null){
+      RedirectView redirectView = new RedirectView(url);
+      redirectView.setStatusCode(HttpStatus.FOUND);
+      return redirectView;
+    } else {
+      return new RedirectView("https://url-shortner-app-production.up.railway.app/");
+    }
   }
 }

@@ -3,7 +3,6 @@ package com.urlshortnerbackend.service;
 import com.urlshortnerbackend.dto.UrlRequest;
 import com.urlshortnerbackend.dto.UrlResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
 public class UrlShortnerService {
 
   private ValueOperations<String, String> redisTemplate;
+  private static final String BACKEND_URL = "https://url-shortner-app-production.up.railway.app/";
 
   public UrlResponse shortenUrl(UrlRequest request) {
     UrlResponse res = new UrlResponse();
@@ -29,7 +29,7 @@ public class UrlShortnerService {
 
     redisTemplate.set(hexString, request.getUrl());
     res.setKey(hexString);
-    res.setShortUrl("http://localhost:8080/" + hexString);
+    res.setShortUrl(BACKEND_URL + hexString);
     res.setUrl(request.getUrl());
     return res;
   }
